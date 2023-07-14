@@ -1,2 +1,4 @@
 import ERC20 from './ERC20.json';
-export { ERC20 };
+import gToken from './gToken.json';
+import PredictPool from './PredictPool.json';
+export { ERC20, gToken, PredictPool };

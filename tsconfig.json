@@ -21,5 +21,8 @@
     "strictPropertyInitialization": false,
     "allowJs": true,
     "alwaysStrict": true
+  },
+  "watchOptions": {
+    "excludeDirectories": ["**/node_modules", "dist"]
   }
 }
