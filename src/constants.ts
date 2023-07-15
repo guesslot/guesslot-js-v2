@@ -1,5 +1,5 @@
 export const Settings: any = {
-  DefaultChain: 137,
+  DefaultChain: 80001,
   Chains: {
     80001: {
       chainId: '0x13881',
@@ -39,6 +39,9 @@ export const Settings: any = {
     },
   },
   Contracts: {
+    80001: {
+      Stats: '0x3eB15cC56F5b965b4B54982c97080eD57CF52E8E',
+    },
     137: {
       Token: '0x1ba1ca0a11053e697c5cdf9ddb776ee5119e64a4',
     },

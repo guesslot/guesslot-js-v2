@@ -35,16 +35,12 @@ export default abstract class Contract {
     return new contract(address, abi, this.provider.getSigner());
   }
 
-  // protected getContractFromName(addressName: string, abiName: any): any {
-  //   const address: any = this.getSetting(addressName);
-  //   const abi: any = this.getAbi(abiName);
-  //   return this.getContract(address, abi);
-  // }
-
-  // protected getContractFromAddress(address: string, provider: any = this.provider): any {
-  //   const abi: any = this.getAbi(this.name);
-  //   return this.getContract(address, abi, provider);
-  // }
+  protected async getContractByName(name: string = this.name): Promise<any> {
+    const chainId: number = await this.getChainId();
+    const address: any = this.getSetting(chainId, name);
+    const abi: any = this.getAbi(name);
+    return this.getContract(address, abi);
+  }
 
   protected async getChainId(): Promise<any> {
     const chainId = await this.provider.send('eth_chainId', []);
