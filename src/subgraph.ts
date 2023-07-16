@@ -1,7 +1,7 @@
 import axios from 'axios';
 import { formatEther, formatUnits, parseUnits } from '@ethersproject/units';
 
-export default class Subgraph {
+export class Subgraph {
   private thegraphApi: string = 'https://api.thegraph.com/subgraphs/name/guesslot/v2';
   private githubApi: string = 'https://raw.githubusercontent.com/guesslot/guesslot-events/main/events.json';
   private events: any;

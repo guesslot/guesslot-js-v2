@@ -36,7 +36,7 @@ export class PredictPool extends Contract {
     return contract.refund(epoch, formatBytes32String(event));
   }
 
-  public async needApprove(account: string, token: string, spender: string, isFreezePool?: boolean): Promise<boolean> {
+  public async needApprove(account: any, token: string, spender: string, isFreezePool?: boolean): Promise<boolean> {
     if (isFreezePool) return false;
     return super.needApprove(account, token, spender);
   }

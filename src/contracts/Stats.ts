@@ -2,7 +2,7 @@
 import { AddressZero } from '@ethersproject/constants';
 import { formatEther, formatUnits, parseUnits } from '@ethersproject/units';
 import Contract from '../contract';
-import Subgraph from '../subgraph';
+import { Subgraph } from '../subgraph';
 
 export class Stats extends Contract {
   protected name: any = 'Stats';
@@ -27,7 +27,7 @@ export class Stats extends Contract {
     };
   }
 
-  public async getAssets(account: string): Promise<any> {
+  public async getAssets(account: any): Promise<any> {
     if (!account) account = AddressZero;
     const contract = await this.getContractByName();
     const stakes = await this.subgraph.getStakes(account);
@@ -41,7 +41,7 @@ export class Stats extends Contract {
     });
   }
 
-  public async getAsset(account: string, asset: string): Promise<any> {
+  public async getAsset(account: any, asset: string): Promise<any> {
     if (!account) account = AddressZero;
     const contract = await this.getContractByName();
     const stakes = await this.subgraph.getStakes(account);

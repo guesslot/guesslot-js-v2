@@ -40,7 +40,7 @@ export const Settings: any = {
   },
   Contracts: {
     80001: {
-      Stats: '0xbf3105Ed8b68C0e66390ab0F5eE135447C9A82c8',
+      Stats: '0xAd34aA171406CaB1fA3D3e886fbaE7AE6e93ac01',
     },
     137: {
       Token: '0x1ba1ca0a11053e697c5cdf9ddb776ee5119e64a4',
