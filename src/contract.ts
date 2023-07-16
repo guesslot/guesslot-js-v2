@@ -56,13 +56,11 @@ export default abstract class Contract {
       });
   }
 
-  public async needApprove(token: string, spender: string = ''): Promise<boolean> {
-    const chainId: number = await this.getChainId();
-    const account: string = await this.getAccount();
-    const address: string = this.getSetting(chainId, token);
+  public async needApprove(account: string, token: string, spender: string): Promise<boolean> {
+    if (!account) return false;
+
     const abi: any = this.getAbi('ERC20');
-    const erc20: any = this.getContract(address, abi);
-    if (!spender) spender = this.getAddress(chainId);
+    const erc20: any = this.getContract(token, abi);
 
     const allowance: BigNumber = await erc20.allowance(account, spender);
     const value: BigNumber = await erc20.balanceOf(account);
@@ -71,13 +69,10 @@ export default abstract class Contract {
     return allowance.lt(value);
   }
 
-  public async approve(token: string, spender: string = ''): Promise<any> {
-    const chainId: number = await this.getChainId();
-    const address: string = this.getSetting(chainId, token);
+  public async approve(token: string, spender: string): Promise<any> {
     const abi: any = this.getAbi('ERC20');
-    const erc20: any = this.getContract(address, abi);
+    const erc20: any = this.getContract(token, abi);
     const amount: BigNumber = BigNumber.from('0x0000000000000000000000000000000000000000ffffffffffffffffffffffff');
-    if (!spender) spender = this.getAddress(chainId);
 
     return erc20.approve(spender, amount);
   }

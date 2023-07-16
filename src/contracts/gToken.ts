@@ -22,12 +22,6 @@ export class gToken extends Contract {
     return contract.withdraw(parseEther(amount));
   }
 
-  public async predict(token: string, pool: string, event: string, stakes: string, result: number): Promise<any> {
-    const abi: any = this.getAbi(this.name);
-    const contract = this.getContract(token, abi);
-    return contract.predict(pool, event, parseEther(stakes), result);
-  }
-
   public async donate(token: string, amount: string): Promise<any> {
     const abi: any = this.getAbi(this.name);
     const contract = this.getContract(token, abi);

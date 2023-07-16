@@ -47,6 +47,7 @@ export default class Subgraph {
 
       if (data[1]) {
         data[0].detail = JSON.parse(data[1].data);
+        console.log(data[0].detail);
         if (data[0].detail.lockedPrice) data[0].detail.lockedPrice = formatUnits(data[0].detail.lockedPrice, 8);
         if (data[0].detail.closedPrice) data[0].detail.closedPrice = formatUnits(data[0].detail.closedPrice, 8);
       }
@@ -103,11 +104,11 @@ export default class Subgraph {
 
     switch (status) {
       case 'Predicting':
-        where = ',status_gt: 0, endTime_gte: ' + time + ', startTime_lte: ' + time;
+        where = ',status_gt: 0, startTime_lte: ' + time + ', endTime_gte: ' + time;
         break;
 
       case 'Pending':
-        where = ',status_gt: 0, endTime_lt: ' + time;
+        where = ',status_gt: 0, endTime_lte: ' + time + ', settleTime_gte: ' + time;
         break;
 
       case 'Finalized':
