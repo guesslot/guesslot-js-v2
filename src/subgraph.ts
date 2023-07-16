@@ -142,7 +142,7 @@ export class Subgraph {
 
     await this.initEvents();
     const query: string =
-      'query ($account: String!, $skip: Int!) {data:predicts(first: 1000, skip: $skip, orderBy: time, orderDirection: desc, where: { account: $account }) { account, claimed, event { pool, name, epoch, tokenName, stakes, rewards, refunded, status }, result { value, status }, stakes, time }}';
+      'query ($account: String!, $skip: Int!) {data:predicts(first: 1000, skip: $skip, orderBy: time, orderDirection: desc, where: { account: $account }) { account, claimed, event { pool, name, epoch, tokenName, result { stakes }, rewards, refunded, status }, result { value, status }, stakes, time }}';
     return this.request(query, { account: account, skip: skip }).then((data: any) => {
       const items: any = [];
 
@@ -164,6 +164,7 @@ export class Subgraph {
     item.pool = predict.event.pool;
     item.token = predict.event.tokenName;
     item.object = predict.event.name;
+    item.account = predict.account;
     item.result = event.options[predict.result.value];
     item.claimed = predict.claimed;
     item.refunded = predict.event.refunded;
@@ -172,7 +173,7 @@ export class Subgraph {
 
     const rewards = parseUnits(predict.event.rewards, 0);
     const stakes = parseUnits(predict.stakes, 0);
-    const totalStakes = parseUnits(predict.event.stakes, 0);
+    const totalStakes = parseUnits(predict.event.result.stakes, 0);
     item.rewards = totalStakes.isZero() ? formatEther('0') : formatEther(rewards.mul(stakes).div(totalStakes));
 
     if (predict.claimed) {
@@ -189,7 +190,7 @@ export class Subgraph {
   public async getWinners(skip: number = 0): Promise<any> {
     await this.initEvents();
     const query: string =
-      'query ($skip: Int!) {data:predicts(first: 1000, skip: $skip, orderBy: time, orderDirection: desc, where: { result_: { status: 1 } }) { account, claimed, event, { pool, name, epoch, tokenName, stakes, rewards, refunded, status }, result { value, status }, stakes, time }}';
+      'query ($skip: Int!) {data:predicts(first: 1000, skip: $skip, orderBy: time, orderDirection: desc, where: { result_: { status: 1 } }) { account, claimed, event, { pool, name, epoch, tokenName, result { stakes }, rewards, refunded, status }, result { value, status }, stakes, time }}';
     return this.request(query, { skip: skip }).then((data: any) => {
       const items: any = [];
 
