@@ -33,7 +33,7 @@ export class Subgraph {
 
   public async getEvent(pool: string, event: string, epoch: number): Promise<any> {
     await this.initEvents();
-    pool = pool.toLocaleLowerCase();
+    pool = pool.toLowerCase();
     const id: string = pool + '-' + event + '-' + epoch;
     const query1: string =
       'query ($id: String!) {data:event(id:$id) {pool, name, category, epoch, startTime, endTime, settleTime, count, stakes, tokenName, token, results {value, count, stakes}, result {value, status, count, stakes}, rewards, status, isFreezePool}}';
@@ -140,6 +140,7 @@ export class Subgraph {
   public async getHistory(account: string = '', skip: number = 0): Promise<any> {
     if (!account) return;
 
+    account = account.toLowerCase();
     await this.initEvents();
     const query: string =
       'query ($account: String!, $skip: Int!) {data:predicts(first: 1000, skip: $skip, orderBy: time, orderDirection: desc, where: { account: $account }) { account, claimed, event { pool, name, epoch, tokenName, result { stakes }, rewards, refunded, status }, result { value, status }, stakes, time }}';
@@ -173,8 +174,11 @@ export class Subgraph {
 
     const rewards = parseUnits(predict.event.rewards, 0);
     const stakes = parseUnits(predict.stakes, 0);
-    const totalStakes = parseUnits(predict.event.result.stakes, 0);
-    item.rewards = totalStakes.isZero() ? formatEther('0') : formatEther(rewards.mul(stakes).div(totalStakes));
+    const totalStakes = predict.event.result ? parseUnits(predict.event.result.stakes, 0) : parseUnits('0', 0);
+    item.rewards =
+      totalStakes.isZero() || predict.result.status == 0
+        ? formatEther('0')
+        : formatEther(rewards.mul(stakes).div(totalStakes));
 
     if (predict.claimed) {
       item.status = 'Claimed';
@@ -208,6 +212,9 @@ export class Subgraph {
   }
 
   public async getStakes(account: string): Promise<any> {
+    if (!account) return;
+
+    account = account.toLowerCase();
     const query: string =
       'query ($account: Bytes!) {data:accountStakes(first: 1000, where: { account: $account }) { token amount }}';
     return this.request(query, { account: account }).then((data: any) => {

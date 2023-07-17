@@ -4,6 +4,7 @@ import { AddressZero } from '@ethersproject/constants';
 import { getProvider } from './wallet';
 import { Settings } from './constants';
 import * as ABI from './abi';
+import { parseUnits } from '@ethersproject/units';
 
 export default abstract class Contract {
   protected provider: any;
@@ -56,14 +57,14 @@ export default abstract class Contract {
       });
   }
 
-  public async needApprove(account: string, token: string, spender: string): Promise<boolean> {
+  public async needApprove(account: any, token: string, spender: string, amount: string = ''): Promise<boolean> {
     if (!account) return false;
 
     const abi: any = this.getAbi('ERC20');
     const erc20: any = this.getContract(token, abi);
 
     const allowance: BigNumber = await erc20.allowance(account, spender);
-    const value: BigNumber = await erc20.balanceOf(account);
+    const value = amount ? parseUnits(amount, await erc20.decimals()) : await erc20.balanceOf(account);
     if (value == BigNumber.from(0)) return true;
 
     return allowance.lt(value);
