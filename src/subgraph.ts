@@ -47,7 +47,6 @@ export class Subgraph {
 
       if (data[1]) {
         data[0].detail = JSON.parse(data[1].data);
-        console.log(data[0].detail);
         if (data[0].detail.lockedPrice) data[0].detail.lockedPrice = formatUnits(data[0].detail.lockedPrice, 8);
         if (data[0].detail.closedPrice) data[0].detail.closedPrice = formatUnits(data[0].detail.closedPrice, 8);
       }
@@ -146,7 +145,6 @@ export class Subgraph {
       'query ($account: String!, $skip: Int!) {data:predicts(first: 1000, skip: $skip, orderBy: time, orderDirection: desc, where: { account: $account }) { account, claimed, event { pool, name, epoch, tokenName, result { stakes }, rewards, refunded, status }, result { value, status }, stakes, time }}';
     return this.request(query, { account: account, skip: skip }).then((data: any) => {
       const items: any = [];
-
       for (const predict of data) {
         const events: any = this.events[predict.event.pool];
         if (!events) continue;
@@ -185,6 +183,7 @@ export class Subgraph {
     } else if (predict.event.status == 2) {
       item.status = predict.result.status == 1 ? 'Won' : 'Close';
     } else {
+      item.result = '';
       item.status = 'Predicting';
     }
 

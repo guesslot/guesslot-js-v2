@@ -16,6 +16,7 @@ export class PredictPool extends Contract {
     if (isFreezePool) {
       const abi: any = this.getAbi('gToken');
       const contract = this.getContract(token, abi);
+      console.log(pool);
       return contract.predict(pool, formatBytes32String(event), parseEther(stakes), result);
     } else {
       const abi: any = this.getAbi(this.name);
@@ -36,14 +37,8 @@ export class PredictPool extends Contract {
     return contract.refund(epoch, formatBytes32String(event));
   }
 
-  public async needApprove(
-    account: any,
-    token: string,
-    spender: string,
-    amount: string,
-    isFreezePool?: boolean
-  ): Promise<boolean> {
+  public async needApprove(token: string, spender: string, amount: string, isFreezePool?: boolean): Promise<boolean> {
     if (isFreezePool) return false;
-    return super.needApprove(account, token, spender, amount);
+    return super.needApprove(token, spender, amount);
   }
 }

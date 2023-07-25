@@ -57,11 +57,10 @@ export default abstract class Contract {
       });
   }
 
-  public async needApprove(account: any, token: string, spender: string, amount: string = ''): Promise<boolean> {
-    if (!account) return false;
-
+  public async needApprove(token: string, spender: string, amount: string = ''): Promise<boolean> {
     const abi: any = this.getAbi('ERC20');
     const erc20: any = this.getContract(token, abi);
+    const account = await this.getAccount();
 
     const allowance: BigNumber = await erc20.allowance(account, spender);
     const value = amount ? parseUnits(amount, await erc20.decimals()) : await erc20.balanceOf(account);
