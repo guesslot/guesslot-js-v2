@@ -1,4 +1,3 @@
-// import { BigNumber } from '@ethersproject/bignumber';
 import { AddressZero } from '@ethersproject/constants';
 import { formatEther, formatUnits, parseUnits } from '@ethersproject/units';
 import Contract from '../contract';

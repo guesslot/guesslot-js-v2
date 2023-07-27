@@ -69,7 +69,9 @@ export class Subgraph {
         data.results[key] = { count: 0, stakes: 0 };
       }
       data.results[key].stakes = formatEther(data.results[key].stakes);
+      data.results[key].ratio = (data.results[key].count / data.count) * 100;
       delete data.results[key].value;
+      data.results[key].label = data.options[key];
     }
 
     if (data.status == 2) {

@@ -41,6 +41,7 @@ export const Settings: any = {
   Contracts: {
     80001: {
       Stats: '0xCd392EC3422fbfbB49BE953E74DF3df56Dd002DF',
+      Vault: '0x79c72E7F78012Bacecb8F60A21F53193EfF4c198',
     },
   },
 };
