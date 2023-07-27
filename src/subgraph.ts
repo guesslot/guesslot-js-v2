@@ -36,7 +36,7 @@ export class Subgraph {
     pool = pool.toLowerCase();
     const id: string = pool + '-' + event + '-' + epoch;
     const query1: string =
-      'query ($id: String!) {data:event(id:$id) {pool, name, category, epoch, startTime, endTime, settleTime, count, stakes, tokenName, token, results {value, count, stakes}, result {value, status, count, stakes}, rewards, status, isFreezePool}}';
+      'query ($id: String!) {data:event(id:$id) {pool, name, category, epoch, startTime, endTime, settleTime, count, stakes, tokenName, token, results {value, count, stakes}, result {value, status, count, stakes}, rewards, status}}';
     const query2: string = 'query ($id: String!) {data:detail(id:$id) {data}}';
 
     return Promise.all([this.request(query1, { id: id }), this.request(query2, { id: id })]).then((data: any) => {
@@ -118,7 +118,7 @@ export class Subgraph {
     const query: string =
       'query ($tokenName: String!, $category: String!, $skip: Int!) {data:events(first: 100, skip: $skip, orderBy: startTime, orderDirection: desc, where: {tokenName: $tokenName, category: $category' +
       where +
-      '}) {token, pool, name, tokenName, category, epoch, startTime, endTime, settleTime, count, stakes, rewards, refunded, isFreezePool}}';
+      '}) {token, pool, name, tokenName, category, epoch, startTime, endTime, settleTime, count, stakes, rewards, refunded}}';
     return this.request(query, { tokenName: token, category: category, skip: skip }).then((data: any) => {
       const items: any = [];
       data.forEach((item: any) => {

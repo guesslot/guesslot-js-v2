@@ -1,5 +1,6 @@
 import ERC20 from './ERC20.json';
 import gToken from './gToken.json';
-import PredictPool from './PredictPool.json';
+import Pool from './Pool.json';
 import Stats from './Stats.json';
-export { ERC20, gToken, PredictPool, Stats };
+import Vault from './Vault.json';
+export { ERC20, gToken, Pool, Stats, Vault };

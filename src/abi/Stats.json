@@ -1,37 +1,5 @@
 [
   {
-    "anonymous": false,
-    "inputs": [
-      {
-        "indexed": true,
-        "internalType": "address",
-        "name": "asset",
-        "type": "address"
-      },
-      {
-        "indexed": true,
-        "internalType": "address",
-        "name": "token",
-        "type": "address"
-      }
-    ],
-    "name": "AssetAdded",
-    "type": "event"
-  },
-  {
-    "anonymous": false,
-    "inputs": [
-      {
-        "indexed": true,
-        "internalType": "address",
-        "name": "asset",
-        "type": "address"
-      }
-    ],
-    "name": "AssetRemoved",
-    "type": "event"
-  },
-  {
     "inputs": [
       {
         "internalType": "address",
@@ -39,7 +7,7 @@
         "type": "address"
       },
       {
-        "internalType": "contract IERC20",
+        "internalType": "address",
         "name": "asset",
         "type": "address"
       }
@@ -54,7 +22,7 @@
             "type": "string"
           },
           {
-            "internalType": "contract IERC20",
+            "internalType": "address",
             "name": "assetAddress",
             "type": "address"
           },
@@ -74,7 +42,7 @@
             "type": "string"
           },
           {
-            "internalType": "contract IERC20",
+            "internalType": "address",
             "name": "tokenAddress",
             "type": "address"
           },
@@ -89,7 +57,7 @@
             "type": "uint256"
           }
         ],
-        "internalType": "struct IStats.Asset",
+        "internalType": "struct StatsFunction.Asset",
         "name": "",
         "type": "tuple"
       }
@@ -115,7 +83,7 @@
             "type": "string"
           },
           {
-            "internalType": "contract IERC20",
+            "internalType": "address",
             "name": "assetAddress",
             "type": "address"
           },
@@ -135,7 +103,7 @@
             "type": "string"
           },
           {
-            "internalType": "contract IERC20",
+            "internalType": "address",
             "name": "tokenAddress",
             "type": "address"
           },
@@ -150,7 +118,7 @@
             "type": "uint256"
           }
         ],
-        "internalType": "struct IStats.Asset[]",
+        "internalType": "struct StatsFunction.Asset[]",
         "name": "",
         "type": "tuple[]"
       }

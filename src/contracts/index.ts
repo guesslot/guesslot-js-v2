@@ -1,3 +1,3 @@
 export { Stats } from './Stats';
 export { gToken } from './gToken';
-export { PredictPool } from './PredictPool';
+export { Pool } from './Pool';

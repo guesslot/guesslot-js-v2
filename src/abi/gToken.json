@@ -161,6 +161,65 @@
         "internalType": "address",
         "name": "account",
         "type": "address"
+      },
+      {
+        "internalType": "uint256",
+        "name": "amount",
+        "type": "uint256"
+      },
+      {
+        "internalType": "uint256",
+        "name": "unfreezeTime",
+        "type": "uint256"
+      }
+    ],
+    "name": "freezeFrom",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "account",
+        "type": "address"
+      },
+      {
+        "internalType": "uint256",
+        "name": "i",
+        "type": "uint256"
+      }
+    ],
+    "name": "frozen",
+    "outputs": [
+      {
+        "components": [
+          {
+            "internalType": "uint256",
+            "name": "amount",
+            "type": "uint256"
+          },
+          {
+            "internalType": "uint256",
+            "name": "time",
+            "type": "uint256"
+          }
+        ],
+        "internalType": "struct gTokenFunction.Freeze",
+        "name": "",
+        "type": "tuple"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "account",
+        "type": "address"
       }
     ],
     "name": "frozenOf",
@@ -190,48 +249,50 @@
   {
     "inputs": [
       {
-        "internalType": "uint256",
-        "name": "i",
-        "type": "uint256"
+        "internalType": "address",
+        "name": "pool",
+        "type": "address"
       }
     ],
     "name": "pools",
     "outputs": [
       {
-        "internalType": "address",
+        "components": [
+          {
+            "internalType": "uint256",
+            "name": "amount",
+            "type": "uint256"
+          },
+          {
+            "internalType": "uint256",
+            "name": "rewardDebt",
+            "type": "uint256"
+          },
+          {
+            "internalType": "bool",
+            "name": "enable",
+            "type": "bool"
+          }
+        ],
+        "internalType": "struct gTokenFunction.Pool",
         "name": "",
-        "type": "address"
+        "type": "tuple"
       }
     ],
     "stateMutability": "view",
     "type": "function"
   },
   {
-    "inputs": [
-      {
-        "internalType": "address",
-        "name": "pool",
-        "type": "address"
-      },
-      {
-        "internalType": "bytes32",
-        "name": "evt",
-        "type": "bytes32"
-      },
+    "inputs": [],
+    "name": "rewardsPerShare",
+    "outputs": [
       {
         "internalType": "uint256",
-        "name": "stakes",
-        "type": "uint256"
-      },
-      {
-        "internalType": "uint256",
-        "name": "result",
+        "name": "",
         "type": "uint256"
       }
     ],
-    "name": "predict",
-    "outputs": [],
-    "stateMutability": "nonpayable",
+    "stateMutability": "view",
     "type": "function"
   },
   {
@@ -323,6 +384,19 @@
         "type": "bool"
       }
     ],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint256",
+        "name": "amount",
+        "type": "uint256"
+      }
+    ],
+    "name": "unfreeze",
+    "outputs": [],
     "stateMutability": "nonpayable",
     "type": "function"
   },

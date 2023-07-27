@@ -4,10 +4,10 @@ import Contract from '../contract';
 export class gToken extends Contract {
   protected name: any = 'gToken';
 
-  public async pools(token: string, i: number): Promise<any> {
+  public async pools(token: string, pool: string): Promise<any> {
     const abi: any = this.getAbi(this.name);
     const contract = this.getContract(token, abi);
-    return contract.pools(i);
+    return contract.pools(pool);
   }
 
   public async deposit(token: string, amount: string): Promise<any> {
