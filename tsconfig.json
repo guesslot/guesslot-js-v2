@@ -22,7 +22,5 @@
     "allowJs": true,
     "alwaysStrict": true
   },
-  "watchOptions": {
-    "excludeDirectories": ["**/node_modules", "dist"]
-  }
+  "include": ["src/**/*"]
 }
