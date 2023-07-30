@@ -4,7 +4,8 @@ export const Settings: any = {
     80001: {
       chainId: '0x13881',
       chainName: 'Mumbai',
-      rpcUrls: ['https://matic-mumbai.chainstacklabs.com'],
+      // rpcUrls: ['https://matic-mumbai.chainstacklabs.com'],
+      rpcUrls: ['https://rpc-mumbai.maticvigil.com'],
       nativeCurrency: {
         name: 'MATIC',
         symbol: 'MATIC',

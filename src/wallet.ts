@@ -71,7 +71,7 @@ export async function updateWallet(provider: any) {
   return { chain, accounts };
 }
 
-export async function switchChain(provider: any, chainId: number) {
+export async function switchChain(provider: any, chainId: number = Settings.DefaultChain) {
   if (!provider) return;
 
   const chain: any = Settings.Chains[chainId];
@@ -86,7 +86,7 @@ export async function switchChain(provider: any, chainId: number) {
   });
 }
 
-export async function addToken(provider: any, chainId: number) {
+export async function addToken(provider: any, chainId: number = Settings.DefaultChain) {
   if (!provider) return;
 
   const token: any = Settings.Chains[chainId];

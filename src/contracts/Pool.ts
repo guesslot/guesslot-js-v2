@@ -4,6 +4,11 @@ import Contract from '../contract';
 
 export class Pool extends Contract {
   protected name: any = 'Pool';
+  public async claimable(pool: string, account: string, event: string, epoch: number): Promise<any> {
+    const abi: any = this.getAbi(this.name);
+    const contract = this.getContract(pool, abi);
+    return contract.claimable(account, epoch, formatBytes32String(event));
+  }
 
   public async predict(pool: string, event: string, stakes: string, result: number): Promise<any> {
     const abi: any = this.getAbi(this.name);
@@ -26,7 +31,7 @@ export class Pool extends Contract {
   public async settleAll(pool: string): Promise<any> {
     const abi: any = this.getAbi(this.name);
     const contract = this.getContract(pool, abi);
-    return contract.settle();
+    return contract.functions['settle()']();
   }
 
   public async settle(pool: string, event: string, result: number): Promise<any> {
