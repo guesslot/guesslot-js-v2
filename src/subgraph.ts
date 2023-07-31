@@ -31,6 +31,11 @@ export class Subgraph {
     this.events = resp.data;
   }
 
+  public async getSummary(): Promise<any> {
+    const query: string = 'query {data:app(id:"guesslot") { pools, predicts, categories, winners }}';
+    return this.request(query, {});
+  }
+
   public async getEvent(pool: string, event: string, epoch: number): Promise<any> {
     await this.initEvents();
     pool = pool.toLowerCase();
