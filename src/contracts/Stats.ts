@@ -49,4 +49,14 @@ export class Stats extends Contract {
       return this._getAsset(data, stakes);
     });
   }
+
+  public async getEvent(account: any, pool: string, event: string, epoch: number): Promise<any> {
+    if (!account) account = AddressZero;
+    const contract = await this.getContractByName();
+    const evt = await this.subgraph.getEvent(pool, event, epoch);
+    return contract.getAsset(account, evt.token).then((data: any) => {
+      evt.tokenBalance = formatEther(data.assetBalance);
+      return evt;
+    });
+  }
 }
