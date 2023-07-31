@@ -1,4 +1,5 @@
 import axios from 'axios';
+import { AddressZero } from '@ethersproject/constants';
 import { formatEther, formatUnits, parseUnits } from '@ethersproject/units';
 
 export class Subgraph {
@@ -146,26 +147,54 @@ export class Subgraph {
     );
   }
 
-  public async getHistory(account: string = '', skip: number = 0): Promise<any> {
-    if (!account) return;
-
+  public async getHistory(
+    account: string = '',
+    token: string = '',
+    status: string = '',
+    skip: number = 0
+  ): Promise<any> {
+    if (!account) account = AddressZero;
     account = account.toLowerCase();
+    let where = '';
+    let eventStatus = 1;
+
+    switch (status) {
+      case 'Won':
+        eventStatus = 2;
+        where = ', result_: { status: 1 }';
+        break;
+
+      case 'Close':
+        eventStatus = 2;
+        where = ', result_: { status: 0 }';
+        break;
+
+      case 'Claimed':
+        eventStatus = 2;
+        where = ', claimed: true';
+        break;
+    }
+
     await this.initEvents();
     const query: string =
-      'query ($account: String!, $skip: Int!) {data:predicts(first: 1000, skip: $skip, orderBy: time, orderDirection: desc, where: { account: $account }) { account, claimed, event { pool, name, epoch, tokenName, result { stakes }, rewards, refunded, status }, result { value, status }, stakes, time }}';
-    return this.request(query, { account: account, skip: skip }).then((data: any) => {
-      const items: any = [];
-      for (const predict of data) {
-        const events: any = this.events[predict.event.pool];
-        if (!events) continue;
+      'query ($account: String!, $token: String!, $status: Int!, $skip: Int!) {data:predicts(first: 20, skip: $skip, orderBy: time, orderDirection: desc, where: { account: $account, event_: { tokenName: $token, status: $status } ' +
+      where +
+      '}) { account, claimed, event { pool, name, epoch, tokenName, result { stakes }, rewards, refunded, status }, result { value, status }, stakes, time }}';
+    return this.request(query, { account: account, token: token, status: eventStatus, skip: skip }).then(
+      (data: any) => {
+        const items: any = [];
+        for (const predict of data) {
+          const events: any = this.events[predict.event.pool];
+          if (!events) continue;
 
-        const event: any = events[predict.event.name];
-        if (!event) continue;
+          const event: any = events[predict.event.name];
+          if (!event) continue;
 
-        items.push(this._getPredict(predict, event));
+          items.push(this._getPredict(predict, event));
+        }
+        return items;
       }
-      return items;
-    });
+    );
   }
 
   private _getPredict(predict: any, event: any): any {
@@ -203,7 +232,7 @@ export class Subgraph {
   public async getWinners(skip: number = 0): Promise<any> {
     await this.initEvents();
     const query: string =
-      'query ($skip: Int!) {data:predicts(first: 1000, skip: $skip, orderBy: time, orderDirection: desc, where: { result_: { status: 1 } }) { account, claimed, event, { pool, name, epoch, tokenName, result { stakes }, rewards, refunded, status }, result { value, status }, stakes, time }}';
+      'query ($skip: Int!) {data:predicts(first: 20, skip: $skip, orderBy: time, orderDirection: desc, where: { result_: { status: 1 } }) { account, claimed, event, { pool, name, epoch, tokenName, result { stakes }, rewards, refunded, status }, result { value, status }, stakes, time }}';
     return this.request(query, { skip: skip }).then((data: any) => {
       const items: any = [];
 
@@ -221,7 +250,7 @@ export class Subgraph {
   }
 
   public async getStakes(account: string): Promise<any> {
-    if (!account) return;
+    if (!account) account = AddressZero;
 
     account = account.toLowerCase();
     const query: string =
