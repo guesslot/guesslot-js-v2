@@ -102,6 +102,7 @@ export class Subgraph {
     token: string = 'gUSDT',
     status: string = 'Predicting',
     category: string = 'Crypto',
+    keywords: string = '',
     skip: number = 0
   ): Promise<any> {
     await this.initEvents();
@@ -123,24 +124,26 @@ export class Subgraph {
     }
 
     const query: string =
-      'query ($tokenName: String!, $category: String!, $skip: Int!) {data:events(first: 100, skip: $skip, orderBy: startTime, orderDirection: desc, where: {tokenName: $tokenName, category: $category' +
+      'query ($keywords: String!, $tokenName: String!, $category: String!, $skip: Int!) {data:events(first: 20, skip: $skip, orderBy: startTime, orderDirection: desc, where: {name_contains_nocase: $keywords, tokenName: $tokenName, category: $category' +
       where +
       '}) {token, pool, name, tokenName, category, epoch, startTime, endTime, settleTime, count, stakes, rewards, refunded}}';
-    return this.request(query, { tokenName: token, category: category, skip: skip }).then((data: any) => {
-      const items: any = [];
-      data.forEach((item: any) => {
-        const evt: any = this.events[item.pool];
-        if (evt) {
-          item = Object.assign(item, evt[item.name]);
-          item.status = status;
-          item.tokenName = token;
-          item.stakes = formatEther(item.stakes);
-          item.rewards = formatEther(item.rewards);
-          items.push(item);
-        }
-      });
-      return items;
-    });
+    return this.request(query, { keywords: keywords, tokenName: token, category: category, skip: skip }).then(
+      (data: any) => {
+        const items: any = [];
+        data.forEach((item: any) => {
+          const evt: any = this.events[item.pool];
+          if (evt) {
+            item = Object.assign(item, evt[item.name]);
+            item.status = status;
+            item.tokenName = token;
+            item.stakes = formatEther(item.stakes);
+            item.rewards = formatEther(item.rewards);
+            items.push(item);
+          }
+        });
+        return items;
+      }
+    );
   }
 
   public async getHistory(account: string = '', skip: number = 0): Promise<any> {
