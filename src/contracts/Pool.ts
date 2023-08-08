@@ -31,7 +31,7 @@ export class Pool extends Contract {
   public async settleAll(pool: string, startNextEpoch: boolean): Promise<any> {
     const abi: any = this.getAbi(this.name);
     const contract = this.getContract(pool, abi);
-    return contract.functions['settle()'](startNextEpoch);
+    return contract.functions['settle(bool)'](startNextEpoch);
   }
 
   public async settle(pool: string, event: string, result: number): Promise<any> {
