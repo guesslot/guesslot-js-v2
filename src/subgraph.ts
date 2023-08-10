@@ -100,9 +100,9 @@ export class Subgraph {
   }
 
   public async getEvents(
-    token: string = 'gUSDT',
-    status: string = 'Predicting',
-    category: string = 'Crypto',
+    token: string,
+    status: string,
+    category: string[],
     keywords: string = '',
     skip: number = 0
   ): Promise<any> {
@@ -125,7 +125,7 @@ export class Subgraph {
     }
 
     const query: string =
-      'query ($keywords: String!, $tokenName: String!, $category: String!, $skip: Int!) {data:events(first: 20, skip: $skip, orderBy: startTime, orderDirection: desc, where: {name_contains_nocase: $keywords, tokenName: $tokenName, category: $category' +
+      'query ($keywords: String!, $tokenName: String!, $category: [String], $skip: Int!) {data:events(first: 20, skip: $skip, orderBy: startTime, orderDirection: desc, where: {name_contains_nocase: $keywords, tokenName: $tokenName, category_in: $category' +
       where +
       '}) {token, pool, name, tokenName, category, epoch, startTime, endTime, settleTime, count, stakes, rewards, refunded}}';
     return this.request(query, { keywords: keywords, tokenName: token, category: category, skip: skip }).then(
