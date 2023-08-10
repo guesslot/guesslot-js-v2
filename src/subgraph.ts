@@ -134,10 +134,21 @@ export class Subgraph {
         const evt: any = this.events[item.pool];
         if (evt) {
           item = Object.assign(item, evt[item.name]);
-          item.status = status;
-          item.tokenName = token;
           item.stakes = formatEther(item.stakes);
           item.rewards = formatEther(item.rewards);
+
+          if (item.status == 2) {
+            item.status = 'Finalized';
+          } else if (item.startTime > time) {
+            item.status = 'Upcoming';
+          } else if (item.endTime > time) {
+            item.status = 'Predicting';
+          } else if (item.settleTime > time) {
+            item.status = 'Pending';
+          } else {
+            item.status = 'Finalized';
+          }
+
           items.push(item);
         }
       });
