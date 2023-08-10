@@ -107,7 +107,7 @@ export class Subgraph {
     skip: number = 0
   ): Promise<any> {
     await this.initEvents();
-    let where = category ? ', category_in: ' + JSON.stringify(category) : '';
+    let where = category.length == 0 ? '' : ', category_in: ' + JSON.stringify(category);
     const time = parseInt(Date.now() / 1000 + '');
 
     switch (status) {
