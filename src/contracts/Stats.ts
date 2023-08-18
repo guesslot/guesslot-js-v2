@@ -56,15 +56,31 @@ export class Stats extends Contract {
     const contract = await this.getContractByName();
     const evt = await this.subgraph.getEvent(pool, event, epoch);
 
-    const abi: any = this.getAbi('AssetPrice');
     const chainId: number = await this.getChainId();
-    const address: any = this.getSetting(chainId, 'AssetPrice');
-    const assetPrice = this.getContract(address, abi);
+    const assetPriceAbi: any = this.getAbi('AssetPrice');
+    const assetPriceAddress: any = this.getSetting(chainId, 'AssetPrice');
+    const assetPriceContract = this.getContract(assetPriceAddress, assetPriceAbi);
 
-    return contract.getAsset(account, evt.token).then(async (data: any) => {
-      evt.tokenBalance = formatEther(data.assetBalance);
+    const poolAbi: any = this.getAbi('Pool');
+    const poolContract = this.getContract(pool, poolAbi);
+
+    const gTokenAbi: any = this.getAbi('gToken');
+    const gTokenContract = this.getContract(evt.token, gTokenAbi);
+
+    return contract.getAsset(account, evt.token).then(async (asset: any) => {
+      evt.tokenBalance = formatEther(asset.assetBalance);
       if (evt.detail && evt.detail['lockedTime'] > 0)
-        evt.detail.lastPrice = formatUnits(await assetPrice.getPrice(formatBytes32String(event)), 8);
+        evt.detail.lastPrice = formatUnits(await assetPriceContract.getPrice(formatBytes32String(event)), 8);
+
+      if (evt.status == 'Pending' && evt.tokenName == 'gUSDT') {
+        const data = await Promise.all([
+          poolContract.rewardDebt(epoch, formatBytes32String(event)),
+          gTokenContract.rewardsPerShare(),
+        ]);
+        const debt: any = formatEther(data[0]);
+        const rewardsPerShare: any = formatEther(data[1]);
+        evt.rewards = evt.stakes * rewardsPerShare - debt;
+      }
       return evt;
     });
   }
