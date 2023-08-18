@@ -3,4 +3,5 @@ import gToken from './gToken.json';
 import Pool from './Pool.json';
 import Stats from './Stats.json';
 import Vault from './Vault.json';
-export { ERC20, gToken, Pool, Stats, Vault };
+import AssetPrice from './AssetPrice.json';
+export { ERC20, gToken, Pool, Stats, Vault, AssetPrice };

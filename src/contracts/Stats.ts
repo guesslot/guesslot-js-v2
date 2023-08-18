@@ -1,5 +1,6 @@
 import { AddressZero } from '@ethersproject/constants';
 import { formatEther, formatUnits, parseUnits } from '@ethersproject/units';
+import { formatBytes32String } from '@ethersproject/strings';
 import Contract from '../contract';
 import { Subgraph } from '../subgraph';
 
@@ -54,8 +55,16 @@ export class Stats extends Contract {
     if (!account) account = AddressZero;
     const contract = await this.getContractByName();
     const evt = await this.subgraph.getEvent(pool, event, epoch);
-    return contract.getAsset(account, evt.token).then((data: any) => {
+
+    const abi: any = this.getAbi('AssetPrice');
+    const chainId: number = await this.getChainId();
+    const address: any = this.getSetting(chainId, 'AssetPrice');
+    const assetPrice = this.getContract(address, abi);
+
+    return contract.getAsset(account, evt.token).then(async (data: any) => {
       evt.tokenBalance = formatEther(data.assetBalance);
+      if (evt.detail && evt.detail['lockedTime'] > 0)
+        evt.detail.lastPrice = formatUnits(await assetPrice.getPrice(formatBytes32String(event)), 8);
       return evt;
     });
   }
