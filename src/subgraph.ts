@@ -217,6 +217,7 @@ export class Subgraph {
     item.refunded = predict.event.refunded;
     item.epoch = predict.event.epoch;
     item.time = predict.time;
+    item.stakes = formatEther(predict.stakes);
 
     const rewards = parseUnits(predict.event.rewards, 0);
     const stakes = parseUnits(predict.stakes, 0);
