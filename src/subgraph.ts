@@ -131,25 +131,26 @@ export class Subgraph {
     return this.request(query, { keywords: keywords, tokenName: token, skip: skip }).then((data: any) => {
       const items: any = [];
       data.forEach((item: any) => {
-        const evt: any = this.events[item.pool];
-        if (evt) {
-          item = Object.assign(item, evt[item.name]);
-          item.stakes = formatEther(item.stakes);
-          item.rewards = formatEther(item.rewards);
-
-          if (item.status == 2) {
-            item.status = 'Finalized';
-          } else if (item.startTime > time) {
-            item.status = 'Upcoming';
-          } else if (item.endTime > time) {
-            item.status = 'Predicting';
-          } else if (item.settleTime > time) {
-            item.status = 'Pending';
-          } else {
-            item.status = 'Finalized';
+        const events: any = this.events[item.pool];
+        if (events) {
+          const event: any = events[item.name];
+          if (event) {
+            item = Object.assign(item, event);
+            item.stakes = formatEther(item.stakes);
+            item.rewards = formatEther(item.rewards);
+            if (item.status == 2) {
+              item.status = 'Finalized';
+            } else if (item.startTime > time) {
+              item.status = 'Upcoming';
+            } else if (item.endTime > time) {
+              item.status = 'Predicting';
+            } else if (item.settleTime > time) {
+              item.status = 'Pending';
+            } else {
+              item.status = 'Finalized';
+            }
+            items.push(item);
           }
-
-          items.push(item);
         }
       });
       return items;
