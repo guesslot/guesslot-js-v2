@@ -12,7 +12,7 @@ export class Stats extends Contract {
     const assetStakes = data.tokenName
       ? data.assetStakes
       : stakes[data.assetAddress.toLowerCase()]
-      ? parseUnits(stakes[data.assetAddress.toLowerCase()], 0)
+      ? stakes[data.assetAddress.toLowerCase()]
       : parseUnits('0', 0);
     return {
       assetName: data.assetName,

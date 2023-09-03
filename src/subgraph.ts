@@ -265,11 +265,12 @@ export class Subgraph {
 
     account = account.toLowerCase();
     const query: string =
-      'query ($account: Bytes!) {data:accountStakes(first: 1000, where: { account: $account }) { token amount }}';
+      'query ($account: Bytes!) {data:predicts(first: 1000, where: {and: [{claimed: false, account: $account, event_: {tokenName_not_contains: "gUSDT"}}, {or: [{event_: {status: 1}}, {event_: {status: 2}, result_: {status: 1}}]}]}) { stakes, event { token }}}';
     return this.request(query, { account: account }).then((data: any) => {
       const items: any = {};
       data.forEach((item: any) => {
-        items[item.token] = item.amount;
+        if (!items[item.event.token]) items[item.event.token] = parseUnits('0', 0);
+        items[item.event.token] = items[item.event.token].add(parseUnits(item.stakes, 0));
       });
       return items;
     });
