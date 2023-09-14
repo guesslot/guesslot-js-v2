@@ -96,8 +96,9 @@ export class Subgraph {
     data.rewards = formatEther(data.rewards);
     if (data.result) {
       data.result.stakes = formatEther(data.result.stakes);
+      data.result.label = data.results[data.result.value].label;
     } else {
-      data.result = { count: 0, stakes: '0.0', status: 0, value: 0 };
+      data.result = { count: 0, stakes: '0.0', status: 0, value: 0, label: '' };
     }
 
     return data;
