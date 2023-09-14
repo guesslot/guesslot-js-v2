@@ -112,15 +112,15 @@ export class Subgraph {
 
     switch (status) {
       case 'Predicting':
-        where = ',status_gt: 0, startTime_lte: ' + time + ', endTime_gte: ' + time;
+        where += ',status_gt: 0, startTime_lte: ' + time + ', endTime_gte: ' + time;
         break;
 
       case 'Pending':
-        where = ',status_gt: 0, endTime_lte: ' + time + ', settleTime_gte: ' + time;
+        where += ',status_gt: 0, endTime_lte: ' + time + ', settleTime_gte: ' + time;
         break;
 
       case 'Finalized':
-        where = ',status_gt: 0, settleTime_lt: ' + time;
+        where += ',status_gt: 0, settleTime_lt: ' + time;
         break;
     }
 
