@@ -238,7 +238,6 @@ export class Subgraph {
     } else if (predict.event.status == 2) {
       item.status = predict.result.status == 1 ? 'Won' : 'Close';
     } else {
-      item.result = '';
       item.status = 'Predicting';
     }
 
