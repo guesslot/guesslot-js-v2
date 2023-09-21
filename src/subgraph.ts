@@ -188,6 +188,10 @@ export class Subgraph {
         eventStatus = 2;
         where = ', claimed: true';
         break;
+
+      case 'Predicting':
+        where = ', event_: { status: 1 }';
+        break;
     }
 
     await this.initEvents();
