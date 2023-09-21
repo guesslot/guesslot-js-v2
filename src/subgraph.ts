@@ -176,12 +176,12 @@ export class Subgraph {
     switch (status) {
       case 'Won':
         eventStatus = 2;
-        where = ', result_: { status: 1 }';
+        where = ', claimed: false, result_: { status: 1 }';
         break;
 
       case 'Close':
         eventStatus = 2;
-        where = ', result_: { status: 0 }';
+        where = ', claimed: false, result_: { status: 0 }';
         break;
 
       case 'Claimed':
@@ -273,7 +273,7 @@ export class Subgraph {
 
     account = account.toLowerCase();
     const query: string =
-      'query ($account: Bytes!) {data:predicts(first: 1000, where: {and: [{claimed: false, account: $account, event_: {tokenName_not_contains: "gUSDT"}}, {or: [{event_: {status: 1}}, {event_: {status: 2}, result_: {status: 1}}]}]}) { stakes, event { token }}}';
+      'query ($account: Bytes!) {data:predicts(first: 1000, where: {and: [{claimed: false, account: $account, event_: {tokenName_not_contains: "gUSDT"}}, {or: [{event_: {refunded: true}}, {event_: {status: 1}}, {event_: {status: 2}, result_: {status: 1}}]}]}) { stakes, event { token }}}';
     return this.request(query, { account: account }).then((data: any) => {
       const items: any = {};
       data.forEach((item: any) => {
