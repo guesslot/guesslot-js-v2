@@ -61,9 +61,6 @@ export class Stats extends Contract {
     const assetPriceAddress: any = this.getSetting(chainId, 'AssetPrice');
     const assetPriceContract = this.getContract(assetPriceAddress, assetPriceAbi);
 
-    const poolAbi: any = this.getAbi('Pool');
-    const poolContract = this.getContract(pool, poolAbi);
-
     const gTokenAbi: any = this.getAbi('gToken');
     const gTokenContract = this.getContract(evt.token, gTokenAbi);
 
@@ -71,15 +68,11 @@ export class Stats extends Contract {
       evt.tokenBalance = formatEther(asset.assetBalance);
       if (evt.detail && evt.detail['lockedTime'] > 0)
         evt.detail.lastPrice = formatUnits(await assetPriceContract.getPrice(formatBytes32String(event)), 8);
-
       if (evt.status == 'Pending' && evt.tokenName == 'gUSDT') {
-        const data = await Promise.all([
-          poolContract.rewardDebt(epoch, formatBytes32String(event)),
-          gTokenContract.rewardsPerShare(),
-        ]);
-        const debt: any = formatEther(data[0]);
-        const rewardsPerShare: any = formatEther(data[1]);
-        evt.rewards = evt.stakes * rewardsPerShare - debt;
+        const data = await Promise.all([gTokenContract.getRewards(pool), gTokenContract.pools(pool)]);
+        const rewards: any = formatEther(data[0]);
+        const totalStakes: any = formatEther(data[1].amount);
+        evt.rewards = totalStakes == 0 ? 0 : (evt.stakes * rewards) / totalStakes;
       }
       return evt;
     });
