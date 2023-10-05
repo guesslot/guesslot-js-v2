@@ -73,6 +73,7 @@ export class Stats extends Contract {
         const rewards: any = formatEther(data[0]);
         const totalStakes: any = formatEther(data[1].amount);
         evt.rewards = totalStakes == 0 ? 0 : (evt.stakes * rewards) / totalStakes;
+        if (evt.rewards == 0) evt.rewards = '0.0';
       }
       return evt;
     });
