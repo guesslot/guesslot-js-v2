@@ -88,4 +88,8 @@ export const useWallet = reactive({
   useGToken: () => {
     return new gToken(useWallet.provider);
   },
+
+  switchChain: (chainId: number) => {
+    return switchChain(useWallet.provider, chainId);
+  },
 });

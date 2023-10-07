@@ -14,28 +14,14 @@ export const Settings: any = {
       blockExplorerUrls: ['https://mumbai.polygonscan.com/'],
       infuraId: '',
     },
-    137: {
-      chainId: '0x89',
-      chainName: 'Polygon',
-      rpcUrls: ['https://polygon-rpc.com/'],
-      nativeCurrency: {
-        name: 'MATIC',
-        symbol: 'MATIC',
-        decimals: 18,
-      },
-      blockExplorerUrls: ['https://polygonscan.com/'],
-      infuraId: '',
-    },
   },
   Tokens: {
     80001: {},
-    137: {},
   },
   Wallets: {
     WalletConnect: {
       rpc: {
         80001: 'https://matic-mumbai.chainstacklabs.com',
-        137: 'https://polygon-rpc.com/',
       },
     },
   },
