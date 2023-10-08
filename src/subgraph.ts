@@ -4,7 +4,8 @@ import { formatEther, formatUnits, parseUnits } from '@ethersproject/units';
 
 export class Subgraph {
   private thegraphApi: string = 'https://api.thegraph.com/subgraphs/name/guesslot/v2';
-  private githubApi: string = 'https://raw.githubusercontent.com/guesslot/guesslot-events/main/events.json';
+  private eventsApi: string = 'https://raw.githubusercontent.com/guesslot/guesslot-events/main/events.json';
+  private noticesApi: string = 'https://raw.githubusercontent.com/guesslot/guesslot-events/main/notices.json';
   private events: any;
 
   private async request(query: string, data: any): Promise<any> {
@@ -24,12 +25,17 @@ export class Subgraph {
 
   private async initEvents(): Promise<any> {
     if (this.events) return;
-    const resp: any = await axios.get(this.githubApi);
+    const resp: any = await axios.get(this.eventsApi);
     for (const key in resp.data) {
       resp.data[key.toLowerCase()] = resp.data[key];
       delete resp.data[key];
     }
     this.events = resp.data;
+  }
+
+  public async getNotices(): Promise<any> {
+    const resp: any = await axios.get(this.noticesApi);
+    return resp.data;
   }
 
   public async getSummary(): Promise<any> {
