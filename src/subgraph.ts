@@ -185,7 +185,7 @@ export class Subgraph {
         where = ', claimed: false, result_: { status: 1 }';
         break;
 
-      case 'Close':
+      case 'Ended':
         eventStatus = 2;
         where = ', claimed: false, result_: { status: 0 }';
         break;
@@ -246,7 +246,7 @@ export class Subgraph {
     if (predict.claimed) {
       item.status = 'Claimed';
     } else if (predict.event.status == 2) {
-      item.status = predict.result.status == 1 ? 'Won' : 'Close';
+      item.status = predict.result.status == 1 ? 'Won' : 'Ended';
     } else {
       item.status = 'Predicting';
     }
