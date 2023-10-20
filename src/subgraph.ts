@@ -1,9 +1,9 @@
 import axios from 'axios';
 import { AddressZero } from '@ethersproject/constants';
 import { formatEther, formatUnits, parseUnits } from '@ethersproject/units';
+import { Settings } from './constants';
 
 export class Subgraph {
-  private thegraphApi: string = 'https://api.thegraph.com/subgraphs/name/guesslot/v2';
   private eventsApi: string = 'https://raw.githubusercontent.com/guesslot/guesslot-events/main/events.json';
   private noticesApi: string = 'https://raw.githubusercontent.com/guesslot/guesslot-events/main/notices.json';
   private events: any;
@@ -11,7 +11,7 @@ export class Subgraph {
   private async request(query: string, data: any): Promise<any> {
     return axios
       .post(
-        this.thegraphApi,
+        Settings.TheGraph,
         JSON.stringify({
           query: query,
           variables: data,

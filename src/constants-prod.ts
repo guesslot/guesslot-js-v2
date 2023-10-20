@@ -1,5 +1,5 @@
 export const Settings: any = {
-  TheGraph: 'https://api.thegraph.com/subgraphs/name/guesslot/v2',
+  TheGraph: 'https://api.thegraph.com/subgraphs/name/guesslot/polygon',
   DefaultChain: 137,
   Chains: {
     137: {
