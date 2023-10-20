@@ -29,7 +29,7 @@ export const Settings: any = {
     137: {
       Stats: '0xb120c233770513bF7aeFD66Abd3a8130FB747DD2',
       AssetPrice: '0x31225a078B556Be86D06D69fFC5d9E26d0E05726',
-      Vault: '0xf63272d113aaE6A470f5da9Dedd7921034b94928',
+      Vault: '0xaA70a0Dd94D7557E46F3B3Ac55ee6f76c1703De0',
     },
   },
 };
