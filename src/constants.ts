@@ -1,35 +1,36 @@
 export const Settings: any = {
-  TheGraph: 'https://api.thegraph.com/subgraphs/name/guesslot/polygon',
-  DefaultChain: 137,
+  TheGraph: 'https://api.thegraph.com/subgraphs/name/guesslot/mumbai',
+  DefaultChain: 80001,
   Chains: {
-    137: {
-      chainId: '0x89',
-      chainName: 'Polygon',
-      rpcUrls: ['https://polygon-rpc.com'],
+    80001: {
+      chainId: '0x13881',
+      chainName: 'Mumbai',
+      // rpcUrls: ['https://matic-mumbai.chainstacklabs.com'],
+      rpcUrls: ['https://rpc-mumbai.maticvigil.com'],
       nativeCurrency: {
         name: 'MATIC',
         symbol: 'MATIC',
         decimals: 18,
       },
-      blockExplorerUrls: ['https://polygonscan.com/'],
+      blockExplorerUrls: ['https://mumbai.polygonscan.com/'],
       infuraId: '',
     },
   },
   Tokens: {
-    137: {},
+    80001: {},
   },
   Wallets: {
     WalletConnect: {
       rpc: {
-        137: 'https://polygon-rpc.com',
+        80001: 'https://matic-mumbai.chainstacklabs.com',
       },
     },
   },
   Contracts: {
-    137: {
-      Stats: '0xb120c233770513bF7aeFD66Abd3a8130FB747DD2',
-      AssetPrice: '0x31225a078B556Be86D06D69fFC5d9E26d0E05726',
-      Vault: '0xaA70a0Dd94D7557E46F3B3Ac55ee6f76c1703De0',
+    80001: {
+      Stats: '0xCd392EC3422fbfbB49BE953E74DF3df56Dd002DF',
+      AssetPrice: '0x83c8200F4B910833cD675524E60A0158677F8168',
+      Vault: '0x79c72E7F78012Bacecb8F60A21F53193EfF4c198',
     },
   },
 };

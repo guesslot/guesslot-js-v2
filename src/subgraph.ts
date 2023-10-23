@@ -107,6 +107,9 @@ export class Subgraph {
       data.result = { count: 0, stakes: '0.0', status: 0, value: 0, label: '' };
     }
 
+    if (data.status == 'Predicting') 
+      data.endTime =  (data.tital.indexOf('ETH') !== -1) ? data.endTime + 3600 * 24 * 99 : data.endTime + 3600 * 24;
+
     return data;
   }
 
