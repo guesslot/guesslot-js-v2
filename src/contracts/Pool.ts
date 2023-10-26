@@ -31,12 +31,12 @@ export class Pool extends Contract {
   public async settleAll(pool: string, startNextEpoch: boolean): Promise<any> {
     const abi: any = this.getAbi(this.name);
     const contract = this.getContract(pool, abi);
-    return contract.functions['settle(bool)'](startNextEpoch);
+    return contract.functions['settle(bool)'](startNextEpoch, {gasPrice: await this.getGasPrice()});
   }
 
   public async settle(pool: string, event: string, result: number): Promise<any> {
     const abi: any = this.getAbi(this.name);
     const contract = this.getContract(pool, abi);
-    return contract.settle(formatBytes32String(event), result);
+    return contract.settle(formatBytes32String(event), result, {gasPrice: await this.getGasPrice()});
   }
 }

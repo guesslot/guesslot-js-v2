@@ -4,7 +4,7 @@ import { AddressZero } from '@ethersproject/constants';
 import { getProvider } from './wallet';
 import { Settings } from './constants';
 import * as ABI from './abi';
-import { parseUnits } from '@ethersproject/units';
+import { parseUnits, formatUnits } from '@ethersproject/units';
 
 export default abstract class Contract {
   protected provider: any;
@@ -12,6 +12,10 @@ export default abstract class Contract {
 
   constructor(provider: any) {
     this.provider = provider ? provider : getProvider();
+  }
+
+  public async getGasPrice(): Promise<any> {
+    return formatUnits(await this.provider.getSigner().getGasPrice(), 0);
   }
 
   public getSetting(chainId: number, name: string): any {
