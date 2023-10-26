@@ -123,6 +123,7 @@ export class Subgraph {
     await this.initEvents();
     let where = category.length == 0 ? '' : ', category_in: ' + JSON.stringify(category);
     const time = parseInt(Date.now() / 1000 + '');
+    let sort = 'asc';
 
     switch (status) {
       case 'Predicting':
@@ -131,15 +132,17 @@ export class Subgraph {
 
       case 'Pending':
         where += ',status_gt: 0, endTime_lte: ' + time + ', settleTime_gte: ' + time;
+        sort = 'desc';
         break;
 
       case 'Finalized':
         where += ',status_gt: 0, settleTime_lt: ' + time;
+        sort = 'desc';
         break;
     }
 
     const query: string =
-      'query ($keywords: String!, $tokenName: String!, $skip: Int!) {data:events(first: 20, skip: $skip, orderBy: settleTime, orderDirection: asc, where: {name_contains_nocase: $keywords, tokenName_contains_nocase: $tokenName' +
+      'query ($keywords: String!, $tokenName: String!, $skip: Int!) {data:events(first: 20, skip: $skip, orderBy: settleTime, orderDirection: ' + sort + ', where: {name_contains_nocase: $keywords, tokenName_contains_nocase: $tokenName' +
       where +
       '}) {token, pool, name, tokenName, category, epoch, startTime, endTime, settleTime, count, stakes, rewards, refunded}}';
     return this.request(query, { keywords: keywords, tokenName: token, skip: skip }).then((data: any) => {
