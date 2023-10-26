@@ -139,7 +139,7 @@ export class Subgraph {
     }
 
     const query: string =
-      'query ($keywords: String!, $tokenName: String!, $skip: Int!) {data:events(first: 20, skip: $skip, orderBy: settleTime, orderDirection: desc, where: {name_contains_nocase: $keywords, tokenName_contains_nocase: $tokenName' +
+      'query ($keywords: String!, $tokenName: String!, $skip: Int!) {data:events(first: 20, skip: $skip, orderBy: settleTime, orderDirection: asc, where: {name_contains_nocase: $keywords, tokenName_contains_nocase: $tokenName' +
       where +
       '}) {token, pool, name, tokenName, category, epoch, startTime, endTime, settleTime, count, stakes, rewards, refunded}}';
     return this.request(query, { keywords: keywords, tokenName: token, skip: skip }).then((data: any) => {
