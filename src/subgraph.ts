@@ -233,6 +233,7 @@ export class Subgraph {
     item.pool = predict.event.pool;
     item.token = predict.event.tokenName;
     item.object = predict.event.name;
+    item.obj = event.obj;
     item.account = predict.account;
     item.result = event.options[predict.result.value];
     item.claimed = predict.claimed;
