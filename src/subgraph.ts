@@ -107,7 +107,7 @@ export class Subgraph {
       data.result = { count: 0, stakes: '0.0', status: 0, value: 0, label: '' };
     }
 
-    // if (data.status == 'Predicting') 
+    // if (data.status == 'Predicting')
     //   data.endTime =  (data.tital.indexOf('ETH') !== -1) ? data.endTime + 3600 * 24 * 99 : data.endTime + 3600 * 24;
 
     return data;
@@ -142,7 +142,9 @@ export class Subgraph {
     }
 
     const query: string =
-      'query ($keywords: String!, $tokenName: String!, $skip: Int!) {data:events(first: 20, skip: $skip, orderBy: settleTime, orderDirection: ' + sort + ', where: {name_contains_nocase: $keywords, tokenName_contains_nocase: $tokenName' +
+      'query ($keywords: String!, $tokenName: String!, $skip: Int!) {data:events(first: 20, skip: $skip, orderBy: settleTime, orderDirection: ' +
+      sort +
+      ', where: {name_contains_nocase: $keywords, tokenName_contains_nocase: $tokenName' +
       where +
       '}) {token, pool, name, tokenName, category, epoch, startTime, endTime, settleTime, count, stakes, rewards, refunded}}';
     return this.request(query, { keywords: keywords, tokenName: token, skip: skip }).then((data: any) => {
@@ -264,7 +266,7 @@ export class Subgraph {
   public async getWinners(skip: number = 0): Promise<any> {
     await this.initEvents();
     const query: string =
-      'query ($skip: Int!) {data:predicts(first: 20, skip: $skip, orderBy: time, orderDirection: desc, where: { result_: { status: 1 } }) { account, claimed, event, { pool, name, epoch, tokenName, result { stakes }, rewards, refunded, status }, result { value, status }, stakes, time }}';
+      'query ($skip: Int!) {data:predicts(first: 20, skip: $skip, orderBy: event__settleTime, orderDirection: desc, where: { result_: { status: 1 } }) { account, claimed, event, { pool, name, epoch, tokenName, result { stakes }, rewards, refunded, status, settleTime }, result { value, status }, stakes, time }}';
     return this.request(query, { skip: skip }).then((data: any) => {
       const items: any = [];
 
@@ -275,7 +277,9 @@ export class Subgraph {
         const event: any = events[predict.event.name];
         if (!event) continue;
 
-        items.push(this._getPredict(predict, event));
+        const item = this._getPredict(predict, event);
+        item.time = predict.event.settleTime;
+        items.push(item);
       }
       return items;
     });
