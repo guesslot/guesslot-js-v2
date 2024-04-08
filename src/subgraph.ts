@@ -144,7 +144,7 @@ export class Subgraph {
     const query: string =
       'query ($keywords: String!, $tokenName: String!, $skip: Int!) {data:events(first: 20, skip: $skip, orderBy: settleTime, orderDirection: ' +
       sort +
-      ', where: {name_contains_nocase: $keywords, tokenName_contains_nocase: $tokenName' +
+      ', where: {name_contains_nocase: $keywords, tokenName_starts_with_nocase: $tokenName' +
       where +
       '}) {token, pool, name, tokenName, category, epoch, startTime, endTime, settleTime, count, stakes, rewards, refunded}}';
     return this.request(query, { keywords: keywords, tokenName: token, skip: skip }).then((data: any) => {
@@ -210,7 +210,7 @@ export class Subgraph {
 
     await this.initEvents();
     const query: string =
-      'query ($account: String!, $token: String!, $status: Int, $skip: Int!) {data:predicts(first: 20, skip: $skip, orderBy: time, orderDirection: desc, where: { account: $account, event_: { tokenName_contains_nocase: $token, status_gte: $status } ' +
+      'query ($account: String!, $token: String!, $status: Int, $skip: Int!) {data:predicts(first: 20, skip: $skip, orderBy: time, orderDirection: desc, where: { account: $account, event_: { tokenName_starts_with_nocase: $token, status_gte: $status } ' +
       where +
       '}) { account, claimed, event { pool, name, epoch, tokenName, result { stakes }, rewards, refunded, status }, result { value, status }, stakes, time }}';
     return this.request(query, { account: account, token: token, status: eventStatus, skip: skip }).then(
