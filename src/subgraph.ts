@@ -10,13 +10,10 @@ export class Subgraph {
 
   private async request(query: string, data: any): Promise<any> {
     return axios
-      .post(
-        Settings.TheGraph,
-        JSON.stringify({
-          query: query,
-          variables: data,
-        })
-      )
+      .post(Settings.TheGraph, {
+        query: query,
+        variables: data,
+      })
       .then((resp: any) => {
         if (resp.data.data) return resp.data.data.data;
         return Promise.reject(resp.data.errors);
