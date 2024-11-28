@@ -260,6 +260,28 @@ export class Subgraph {
     return item;
   }
 
+  public async getEventWinners(pool:any, name:any, epoch:any, skip: number = 0): Promise<any> {
+    await this.initEvents();
+    const query: string =
+      'query ($pool: Bytes, $name: Bytes, $epoch: Int, $skip: Int!) {data:predicts(first: 20, skip: $skip, orderBy: event__settleTime, orderDirection: desc, where: { result_: { status: 1 }, event_: {pool: $pool, name: $name, epoch: $epoch} }) { account, claimed, event, { pool, name, epoch, tokenName, result { stakes }, rewards, refunded, status, settleTime }, result { value, status }, stakes, time }}';
+    return this.request(query, { pool, name, epoch, skip }).then((data: any) => {
+      const items: any = [];
+
+      for (const predict of data) {
+        const events: any = this.events[predict.event.pool];
+        if (!events) continue;
+
+        const event: any = events[predict.event.name];
+        if (!event) continue;
+
+        const item = this._getPredict(predict, event);
+        item.time = predict.event.settleTime;
+        items.push(item);
+      }
+      return items;
+    });
+  }
+
   public async getWinners(skip: number = 0): Promise<any> {
     await this.initEvents();
     const query: string =
